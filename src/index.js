@@ -1,43 +1,60 @@
-const { app, BrowserWindow } = require('electron');
-const path = require('path');
+const { app, BrowserWindow, ipcMain } = require("electron");
+const path = require("path");
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
-if (require('electron-squirrel-startup')) {
+if (require("electron-squirrel-startup")) {
   app.quit();
 }
 
 const createWindow = () => {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
-    width: 800,
-    height: 600,
+    width: 1050,
+    height: 590,
+    minWidth: 600,
+    minHeight: 590,
+    show: false,
+    center: true,
+    frame: false,
+    roundedCorners: "20px",
     webPreferences: {
-      preload: path.join(__dirname, 'preload.js'),
+      preload: path.join(__dirname, "preload.js"),
     },
   });
-
+  mainWindow.menuBarVisible = false;
   // and load the index.html of the app.
-  mainWindow.loadFile(path.join(__dirname, 'index.html'));
-
+  mainWindow.moveTop();
+  mainWindow.focus();
+  mainWindow.loadURL(path.join(__dirname, "index.html"));
+  mainWindow.setOpacity(0.975);
+  setTimeout(() => mainWindow.show(), 1000);
+  ipcMain.on("maximize", () => {
+    mainWindow.isMaximized() ? mainWindow.unmaximize() : mainWindow.maximize();
+  });
+  ipcMain.on("minimize", () => {
+    mainWindow.isMaximized() ? mainWindow.unmaximize() : mainWindow.minimize();
+  });
+  ipcMain.on("close", () => {
+    mainWindow.close();
+  });
   // Open the DevTools.
-  mainWindow.webContents.openDevTools();
 };
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.on('ready', createWindow);
+app.on("ready", createWindow);
 
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits
 // explicitly with Cmd + Q.
-app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') {
+app.on("window-all-closed", () => {
+  if (process.platform !== "darwin") {
     app.quit();
   }
 });
 
-app.on('activate', () => {
+app.on("activate", () => {
   // On OS X it's common to re-create a window in the app when the
   // dock icon is clicked and there are no other windows open.
   if (BrowserWindow.getAllWindows().length === 0) {
