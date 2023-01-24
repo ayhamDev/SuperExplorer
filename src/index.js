@@ -26,8 +26,12 @@ const createWindow = () => {
   mainWindow.moveTop();
   mainWindow.focus();
   mainWindow.loadURL(path.join(__dirname, "index.html"));
-  mainWindow.setOpacity(0.975);
-  setTimeout(() => mainWindow.show(), 1000);
+  // mainWindow.on("maximize", () => {
+  //   mainWindow.setOpacity(1);
+  // });
+  // mainWindow.on("unmaximize", () => {
+  //   mainWindow.setOpacity(0.975);
+  // });
   ipcMain.on("maximize", () => {
     mainWindow.isMaximized() ? mainWindow.unmaximize() : mainWindow.maximize();
   });
@@ -37,7 +41,9 @@ const createWindow = () => {
   ipcMain.on("close", () => {
     mainWindow.close();
   });
-  // Open the DevTools.
+  mainWindow.webContents.addListener("dom-ready", () => {
+    mainWindow.show();
+  });
 };
 
 // This method will be called when Electron has finished

@@ -6,10 +6,64 @@ html,body {
   @apply bg-neutral-900;
   border-radius: 20px;
 }
+.Main_Content {
+  height: calc(100% - 40px);
+  max-height: calc(100% - 40px);
+}
+.he {
+  height: calc(100% - 72px);
+}
+
+/* width */
+.scrollbar::-webkit-scrollbar {
+  width: 0px;
+}
+
+/* Track */
+.scrollbar::-webkit-scrollbar-track {
+  @apply bg-neutral-800;
+}
+
+/* Handle */
+.scrollbar::-webkit-scrollbar-thumb {
+  @apply bg-neutral-500 rounded;
+
+}
+
+.scrollbar:hover::-webkit-scrollbar {
+
+  width: 8px;
+}
+
+.MainScrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+
+/* Track */
+.MainScrollbar::-webkit-scrollbar-track {
+  @apply bg-neutral-800;
+}
+
+/* Handle */
+.MainScrollbar::-webkit-scrollbar-thumb {
+  @apply bg-neutral-500 rounded;
+
+}
+
 main {
   width: 100%;
   height: 100%;
+  max-width: 100%;
+  max-height: 100%;
+}
+.active_view {
+  @apply bg-neutral-800
 }
 .can_go {
   @apply fill-gray-200 cursor-pointer;
+}
+.line-clamp {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;  
 }
